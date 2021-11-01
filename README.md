@@ -1,3 +1,4 @@
 # Lab 6 - Starter
-Harry
+Jungwook(Harry) Hur
+
 Perry Wang
