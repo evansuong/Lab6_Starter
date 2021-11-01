@@ -1,17 +1,17 @@
 class RecipeCard extends HTMLElement {
-  constructor() {
-    // Part 1 Expose - TODO
-    super();
-    
-    Element.attachShadow;
-    Element.shadowroot;
-    // You'll want to attach the shadow DOM here
-  }
+    constructor() {
+        // Part 1 Expose - TODO
+        super();
 
-  set data(data) {
-    // This is the CSS that you'll use for your recipe cards
-    const styleElem = document.createElement('style');
-    const styles = `
+        Element.attachShadow;
+        Element.shadowroot;
+        // You'll want to attach the shadow DOM here
+    }
+
+    set data(data) {
+        // This is the CSS that you'll use for your recipe cards
+        const styleElem = document.createElement('style');
+        const styles = `
       * {
         font-family: sans-serif;
         margin: 0;
@@ -86,34 +86,40 @@ class RecipeCard extends HTMLElement {
         font-size: 12px;
       }
     `;
-    styleElem.innerHTML = styles;
+        styleElem.innerHTML = styles;
 
-    // Here's the root element that you'll want to attach all of your other elements to
-    const card = document.createElement('article');
-    element.appendChild(card);
+        // Here's the root element that you'll want to attach all of your other elements to
+        const card = document.createElement('article');
+        element.appendChild(card);
 
-    // Some functions that will be helpful here:
-    //    document.createElement()
-    //    document.querySelector()
-    //    element.classList.add()
-    //    element.setAttribute()
-    //    element.appendChild()
-    //    & All of the helper functions below
+        // Some functions that will be helpful here:
+        //    document.createElement()
+        //    document.querySelector()
+        //    element.classList.add()
+        //    element.setAttribute()
+        //    element.appendChild()
+        //    & All of the helper functions below
 
-    // Make sure to attach your root element and styles to the shadow DOM you
-    // created in the constructor()
-    const Class = document.querySelector("title");
-  
-   var imgElement = card.querySelectorAll('img');
-    imgElement[0].src = "assets/images/icons/5-star.svg"; 
+        // Make sure to attach your root element and styles to the shadow DOM you
+        // created in the constructor()
+        this.appendChild(card);
+        const Class = document.querySelector("title");
+        card.appendChild(Class);
+        this.appendChild(styleElem);
+        var imgElement = card.querySelectorAll('img');
+        imgElement[0].src = "assets/images/icons/5-star.svg";
+        card.appendChild(imgElement);
+        var cardOrganization = element.getOrgnaization(data);
+        card.appendChild(cardOrganization);
+        var cardURL = element.getUrl(data);
+        card.appendChild(cardURL);
 
 
-
-    //document.querySelector()
-    //var imgElement = document.querySelectorAll('img');
-    //card.imgElement[0].src = "assets/images/5-star.svg";
-       // Part 1 Expose - TODO
-  }
+        //document.querySelector()
+        //var imgElement = document.querySelectorAll('img');
+        //card.imgElement[0].src = "assets/images/5-star.svg";
+        // Part 1 Expose - TODO
+    }
 }
 
 
@@ -130,18 +136,18 @@ class RecipeCard extends HTMLElement {
  * @returns {*} the value of the found key
  */
 function searchForKey(object, key) {
-  var value;
-  Object.keys(object).some(function (k) {
-    if (k === key) {
-      value = object[k];
-      return true;
-    }
-    if (object[k] && typeof object[k] === 'object') {
-      value = searchForKey(object[k], key);
-      return value !== undefined;
-    }
-  });
-  return value;
+    var value;
+    Object.keys(object).some(function(k) {
+        if (k === key) {
+            value = object[k];
+            return true;
+        }
+        if (object[k] && typeof object[k] === 'object') {
+            value = searchForKey(object[k], key);
+            return value !== undefined;
+        }
+    });
+    return value;
 }
 
 /**
@@ -150,13 +156,13 @@ function searchForKey(object, key) {
  * @returns {String} If found, it returns the URL as a string, otherwise null
  */
 function getUrl(data) {
-  if (data.url) return data.url;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Article') return data['@graph'][i]['@id'];
-    }
-  };
-  return null;
+    if (data.url) return data.url;
+    if (data['@graph']) {
+        for (let i = 0; i < data['@graph'].length; i++) {
+            if (data['@graph'][i]['@type'] == 'Article') return data['@graph'][i]['@id'];
+        }
+    };
+    return null;
 }
 
 /**
@@ -166,15 +172,15 @@ function getUrl(data) {
  * @returns {String} If found, it retuns the name of the org as a string, otherwise null
  */
 function getOrganization(data) {
-  if (data.publisher?.name) return data.publisher?.name;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Organization') {
-        return data['@graph'][i].name;
-      }
-    }
-  };
-  return null;
+    if (data.publisher ? .name) return data.publisher ? .name;
+    if (data['@graph']) {
+        for (let i = 0; i < data['@graph'].length; i++) {
+            if (data['@graph'][i]['@type'] == 'Organization') {
+                return data['@graph'][i].name;
+            }
+        }
+    };
+    return null;
 }
 
 /**
@@ -184,25 +190,25 @@ function getOrganization(data) {
  * @return {String} formatted time string
  */
 function convertTime(time) {
-  let timeStr = '';
+    let timeStr = '';
 
-  // Remove the 'PT'
-  time = time.slice(2);
+    // Remove the 'PT'
+    time = time.slice(2);
 
-  let timeArr = time.split('');
-  if (time.includes('H')) {
-    for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'H') return `${timeStr} hr`;
-      timeStr += timeArr[i];
+    let timeArr = time.split('');
+    if (time.includes('H')) {
+        for (let i = 0; i < timeArr.length; i++) {
+            if (timeArr[i] == 'H') return `${timeStr} hr`;
+            timeStr += timeArr[i];
+        }
+    } else {
+        for (let i = 0; i < timeArr.length; i++) {
+            if (timeArr[i] == 'M') return `${timeStr} min`;
+            timeStr += timeArr[i];
+        }
     }
-  } else {
-    for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'M') return `${timeStr} min`;
-      timeStr += timeArr[i];
-    }
-  }
 
-  return '';
+    return '';
 }
 
 /**
@@ -213,28 +219,28 @@ function convertTime(time) {
  * @return {String} the string comma separate list of ingredients from the array
  */
 function createIngredientList(ingredientArr) {
-  let finalIngredientList = '';
+    let finalIngredientList = '';
 
-  /**
-   * Removes the quantity and measurement from an ingredient string.
-   * This isn't perfect, it makes the assumption that there will always be a quantity
-   * (sometimes there isn't, so this would fail on something like '2 apples' or 'Some olive oil').
-   * For the purposes of this lab you don't have to worry about those cases.
-   * @param {String} ingredient the raw ingredient string you'd like to process
-   * @return {String} the ingredient without the measurement & quantity 
-   * (e.g. '1 cup flour' returns 'flour')
-   */
-  function _removeQtyAndMeasurement(ingredient) {
-    return ingredient.split(' ').splice(2).join(' ');
-  }
+    /**
+     * Removes the quantity and measurement from an ingredient string.
+     * This isn't perfect, it makes the assumption that there will always be a quantity
+     * (sometimes there isn't, so this would fail on something like '2 apples' or 'Some olive oil').
+     * For the purposes of this lab you don't have to worry about those cases.
+     * @param {String} ingredient the raw ingredient string you'd like to process
+     * @return {String} the ingredient without the measurement & quantity 
+     * (e.g. '1 cup flour' returns 'flour')
+     */
+    function _removeQtyAndMeasurement(ingredient) {
+        return ingredient.split(' ').splice(2).join(' ');
+    }
 
-  ingredientArr.forEach(ingredient => {
-    ingredient = _removeQtyAndMeasurement(ingredient);
-    finalIngredientList += `${ingredient}, `;
-  });
+    ingredientArr.forEach(ingredient => {
+        ingredient = _removeQtyAndMeasurement(ingredient);
+        finalIngredientList += `${ingredient}, `;
+    });
 
-  // The .slice(0,-2) here gets ride of the extra ', ' added to the last ingredient
-  return finalIngredientList.slice(0, -2);
+    // The .slice(0,-2) here gets ride of the extra ', ' added to the last ingredient
+    return finalIngredientList.slice(0, -2);
 }
 
 // Define the Class so you can use it as a custom element.
